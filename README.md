@@ -58,3 +58,30 @@ Para mudar:
 - 9º Ano
 - 1º Ensino Médio
 - 2º Ensino Médio
+
+
+## Rodar no PC (Windows) — SEM Postgres (recomendado)
+> Assim você NÃO precisa de psycopg2.
+
+```bat
+python -m venv venv
+venv\Scripts\activate
+python -m pip install --upgrade pip
+pip install -r requirements-local.txt
+python init_db.py
+python app.py
+```
+
+## Deploy no Render — COM Postgres
+No Render:
+- Build: `pip install -r requirements-render.txt`
+- Start: `gunicorn app:app`
+- Env vars:
+  - `DATABASE_URL` = URL **interior** do Postgres do Render
+  - `ADMIN_PASSWORD` = sua senha do painel
+  - `SECRET_KEY` = qualquer valor
+
+## Se você quiser usar Postgres no seu PC
+Use a URL **EXTERIOR** e especifique o driver psycopg (v3):
+1) `pip install "psycopg[binary]"`
+2) `set DATABASE_URL=postgresql+psycopg://...`
