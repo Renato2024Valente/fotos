@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: galeria-alunos-sem-senha
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements-render.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      # Se você criar um Postgres no Render, adicione DATABASE_URL nas env vars do serviço (Dashboard).
+      # Para manter uploads, use um Disco Persistente e aponte UPLOAD_FOLDER para o mount:
+      # - key: UPLOAD_FOLDER
+      #   value: /var/data/uploads
+    # disks:
+    #   - name: uploads
+    #     mountPath: /var/data
+    #     sizeGB: 1

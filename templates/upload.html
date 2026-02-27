@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-lg-8">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h1 class="h4 mb-3">Enviar imagem</h1>
+
+        <form method="post" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label class="form-label">Imagem (PNG/JPG/JPEG/GIF/WEBP)</label>
+            <input class="form-control" type="file" name="image" accept=".png,.jpg,.jpeg,.gif,.webp" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Legenda (opcional)</label>
+            <input class="form-control" name="caption" maxlength="200" placeholder="Ex.: Projeto Robótica - Carrinho">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Galeria</label>
+            <select class="form-select" name="turma" required>
+              <option value="" disabled selected>Selecione…</option>
+              {% for slug, nome in turmas.items() %}
+                <option value="{{ slug }}">{{ nome }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="d-flex gap-2">
+            <button class="btn btn-primary" type="submit">Publicar</button>
+            <a class="btn btn-outline-secondary" href="{{ url_for('admin') }}">Voltar</a>
+          </div>
+        </form>
+
+        <div class="small text-muted mt-3">
+          Dica: no Render sem disco persistente, as imagens podem sumir após reinício/redeploy.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

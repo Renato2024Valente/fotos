@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-md-6 col-lg-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h1 class="h4 mb-3">Acesso da Gestão</h1>
+        <form method="post">
+          <label class="form-label">Usuário</label>
+          <input class="form-control mb-2" name="username" required>
+
+          <label class="form-label">Senha</label>
+          <input class="form-control mb-3" type="password" name="password" required>
+
+          <button class="btn btn-primary w-100" type="submit">Entrar</button>
+        </form>
+
+        <div class="small text-muted mt-3">
+          Usuário e senha são definidos pelas variáveis ADMIN_USER e ADMIN_PASSWORD.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

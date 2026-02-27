@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-3">
+  <div>
+    <h1 class="h3 mb-1">{{ turma_nome }}</h1>
+    <div class="text-muted">Imagens publicadas nesta galeria.</div>
+  </div>
+  <a class="btn btn-outline-secondary" href="{{ url_for('index') }}">Voltar</a>
+</div>
+
+{% if images|length == 0 %}
+  <div class="alert alert-info">Ainda não há imagens nesta galeria.</div>
+{% else %}
+  <div class="row g-3">
+    {% for img in images %}
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="card h-100 shadow-sm">
+          <a href="{{ url_for('uploaded_file', filename=img.filename) }}" target="_blank" rel="noopener">
+            <img class="card-img-top thumb" src="{{ url_for('uploaded_file', filename=img.filename) }}" alt="{{ img.caption or 'imagem' }}">
+          </a>
+          <div class="card-body">
+            <div class="small text-muted">{{ img.uploaded_at.strftime("%d/%m/%Y %H:%M") }}</div>
+            {% if img.caption %}<div class="mt-2">{{ img.caption }}</div>{% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-3">
+  <div>
+    <h1 class="h3 mb-1">Postar / Deletar</h1>
+    <div class="text-muted">Apenas quem tem a senha consegue enviar e remover.</div>
+  </div>
+  <div class="d-flex flex-wrap gap-2 align-items-end">
+    <form class="d-flex gap-2" method="get" action="{{ url_for('admin') }}">
+      <select class="form-select form-select-sm" name="turma" style="min-width: 200px;">
+        <option value="">Todas as galerias</option>
+        {% for slug, nome in turmas.items() %}
+          <option value="{{ slug }}" {% if slug == turma_atual %}selected{% endif %}>{{ nome }}</option>
+        {% endfor %}
+      </select>
+      <button class="btn btn-sm btn-outline-primary" type="submit">Filtrar</button>
+    </form>
+    <a class="btn btn-primary btn-sm" href="{{ url_for('upload') }}">+ Enviar imagem</a>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    {% if images|length == 0 %}
+      <div class="alert alert-info mb-0">Nenhuma imagem cadastrada ainda.</div>
+    {% else %}
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th>Prévia</th>
+              <th>Legenda</th>
+              <th>Turma</th>
+              <th>Data</th>
+              <th class="text-end">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for img in images %}
+              <tr>
+                <td style="width:110px">
+                  <a href="{{ url_for('uploaded_file', filename=img.filename) }}" target="_blank" rel="noopener">
+                    <img class="thumb-sm" src="{{ url_for('uploaded_file', filename=img.filename) }}" alt="">
+                  </a>
+                </td>
+                <td>{{ img.caption or "" }}</td>
+                <td>{{ turmas.get(img.turma, img.turma or '') }}</td>
+                <td class="text-muted">{{ img.uploaded_at.strftime("%d/%m/%Y %H:%M") }}</td>
+                <td class="text-end">
+                  <form method="post" action="{{ url_for('delete_image', image_id=img.id) }}" onsubmit="return confirm('Remover esta imagem?');">
+                    <button class="btn btn-sm btn-outline-danger" type="submit">Remover</button>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

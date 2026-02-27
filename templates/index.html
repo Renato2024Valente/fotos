@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-3">
+  <div>
+    <h1 class="h3 mb-1">Galeria</h1>
+    <div class="text-muted">As imagens publicadas aparecem aqui para os alunos visualizarem.</div>
+  </div>
+
+  <form class="d-flex gap-2" method="get" action="{{ url_for('index') }}">
+    <select class="form-select form-select-sm" name="turma" style="min-width: 180px;">
+      <option value="">Todas as turmas</option>
+      {% for t in turmas %}
+        <option value="{{ t }}" {% if t == turma_atual %}selected{% endif %}>{{ t }}</option>
+      {% endfor %}
+    </select>
+    <button class="btn btn-sm btn-primary" type="submit">Filtrar</button>
+    {% if turma_atual %}
+      <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('index') }}">Limpar</a>
+    {% endif %}
+  </form>
+</div>
+
+{% if images|length == 0 %}
+  <div class="alert alert-info">Ainda não há imagens publicadas.</div>
+{% else %}
+  <div class="row g-3">
+    {% for img in images %}
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="card h-100 shadow-sm">
+          <a href="{{ url_for('uploaded_file', filename=img.filename) }}" target="_blank" rel="noopener">
+            <img class="card-img-top thumb" src="{{ url_for('uploaded_file', filename=img.filename) }}" alt="{{ img.caption or 'imagem' }}">
+          </a>
+          <div class="card-body">
+            <div class="small text-muted">{{ img.uploaded_at.strftime("%d/%m/%Y %H:%M") }}</div>
+            {% if img.turma %}<div class="badge text-bg-secondary">{{ img.turma }}</div>{% endif %}
+            {% if img.caption %}<div class="mt-2">{{ img.caption }}</div>{% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+{% endblock %}

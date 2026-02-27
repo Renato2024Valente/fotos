@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="mb-3">
+  <h1 class="h3 mb-1">Escolha a galeria</h1>
+  <div class="text-muted">Selecione a série para ver as imagens.</div>
+</div>
+
+<div class="row g-3">
+  {% for slug, nome in turmas.items() %}
+    <div class="col-12 col-md-6 col-lg-4">
+      <a class="text-decoration-none" href="{{ url_for('galeria', turma=slug) }}">
+        <div class="card h-100 shadow-sm">
+          {% if latest[slug] %}
+            <img class="card-img-top thumb" src="{{ url_for('uploaded_file', filename=latest[slug].filename) }}" alt="">
+          {% endif %}
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="h5 mb-0">{{ nome }}</div>
+              <span class="badge text-bg-primary">{{ counts[slug] }} fotos</span>
+            </div>
+            <div class="text-muted small mt-2">Clique para abrir</div>
+          </div>
+        </div>
+      </a>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}
